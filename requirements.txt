@@ -1,0 +1,6 @@
+# Requirements for local testing
+# Note: When deployed to Snowflake SiS, only streamlit and snowflake-snowpark-python are needed
+
+streamlit>=1.28.0
+snowflake-connector-python>=3.0.0
+pandas>=2.0.0
