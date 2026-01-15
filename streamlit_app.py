@@ -1,6 +1,6 @@
 """
-Dedupe Workflow Tool - Streamlit in Snowflake (SiS)
-A replacement for the PowerApps/SharePoint duplicate management solution.
+Customer De-duping Workflow - Streamlit in Snowflake (SiS)
+Tower Insurance NZ - Duplicate Customer Management System
 
 This app allows customer service agents to:
 - Review potential duplicate customer records
@@ -19,91 +19,141 @@ import uuid
 # Page Configuration
 # =============================================================================
 st.set_page_config(
-    page_title="Dedupe Workflow Tool",
-    page_icon="🔗",
+    page_title="Tower Insurance | Customer De-duping Workflow",
+    page_icon="🏢",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # =============================================================================
-# Custom CSS for Professional Styling
+# Custom CSS - Tower Insurance NZ Corporate Branding
 # =============================================================================
 st.markdown("""
 <style>
-    /* Main theme colors - Deep teal and coral accent */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    /* Tower Insurance NZ Corporate Colors */
     :root {
-        --primary-color: #0d4f4f;
-        --secondary-color: #1a7a7a;
-        --accent-color: #ff6b5b;
-        --success-color: #2ecc71;
-        --warning-color: #f39c12;
-        --danger-color: #e74c3c;
-        --bg-dark: #0a3535;
-        --bg-light: #f8fafa;
-        --text-light: #ecf0f1;
+        --tower-navy: #00539B;
+        --tower-navy-dark: #003d73;
+        --tower-navy-light: #0066bf;
+        --tower-yellow: #FFD700;
+        --tower-yellow-dark: #E6C200;
+        --tower-white: #ffffff;
+        --tower-gray-50: #f8fafc;
+        --tower-gray-100: #f1f5f9;
+        --tower-gray-200: #e2e8f0;
+        --tower-gray-400: #94a3b8;
+        --tower-gray-600: #475569;
+        --tower-gray-800: #1e293b;
+        --success-color: #22c55e;
+        --warning-color: #eab308;
+        --danger-color: #ef4444;
     }
     
-    /* Header styling */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    /* Main app background */
+    .stApp {
+        background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+    }
+    
+    /* Tower Header styling */
     .main-header {
-        background: linear-gradient(135deg, #0d4f4f 0%, #1a7a7a 50%, #2d9d9d 100%);
+        background: linear-gradient(135deg, var(--tower-navy-dark) 0%, var(--tower-navy) 50%, var(--tower-navy-light) 100%);
         padding: 1.5rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.5rem;
-        box-shadow: 0 4px 20px rgba(13, 79, 79, 0.3);
+        box-shadow: 0 4px 20px rgba(0, 83, 155, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 100%;
+        background: linear-gradient(135deg, transparent 0%, rgba(255, 215, 0, 0.1) 100%);
     }
     
     .main-header h1 {
-        color: white;
+        color: var(--tower-white);
         margin: 0;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 1.8rem;
         letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .main-header h1::before {
+        content: '🏢';
+        font-size: 1.5rem;
     }
     
     .main-header p {
-        color: rgba(255,255,255,0.85);
+        color: rgba(255,255,255,0.9);
         margin: 0.5rem 0 0 0;
         font-size: 0.95rem;
     }
     
-    /* Metric cards */
+    .tower-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--tower-yellow);
+        color: var(--tower-navy-dark);
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    
+    /* Metric cards - Tower branded */
     .metric-card {
-        background: linear-gradient(145deg, #ffffff 0%, #f8fafa 100%);
+        background: linear-gradient(145deg, var(--tower-white) 0%, var(--tower-gray-50) 100%);
         border-radius: 12px;
         padding: 1.25rem;
         text-align: center;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        border-left: 4px solid #1a7a7a;
-        transition: transform 0.2s ease;
+        box-shadow: 0 2px 12px rgba(0, 83, 155, 0.1);
+        border-left: 4px solid var(--tower-navy);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
     .metric-card:hover {
         transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 83, 155, 0.15);
     }
     
     .metric-value {
         font-size: 2.2rem;
         font-weight: 700;
-        color: #0d4f4f;
+        color: var(--tower-navy);
         line-height: 1;
     }
     
     .metric-label {
         font-size: 0.85rem;
-        color: #5a6c6c;
+        color: var(--tower-gray-600);
         margin-top: 0.5rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        font-weight: 500;
     }
     
-    /* Customer comparison cards */
+    /* Customer comparison cards - Tower branded */
     .customer-card {
-        background: white;
+        background: var(--tower-white);
         border-radius: 12px;
         padding: 1.5rem;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-        border-top: 4px solid #1a7a7a;
+        box-shadow: 0 2px 15px rgba(0, 83, 155, 0.1);
+        border-top: 4px solid var(--tower-navy);
         height: 100%;
     }
     
@@ -113,13 +163,13 @@ st.markdown("""
         align-items: center;
         margin-bottom: 1rem;
         padding-bottom: 0.75rem;
-        border-bottom: 2px solid #e8eeee;
+        border-bottom: 2px solid var(--tower-gray-200);
     }
     
     .customer-id {
-        font-family: 'SF Mono', 'Consolas', monospace;
-        background: #e8f4f4;
-        color: #0d4f4f;
+        font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+        background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-light) 100%);
+        color: var(--tower-white);
         padding: 0.25rem 0.75rem;
         border-radius: 20px;
         font-size: 0.85rem;
@@ -129,37 +179,37 @@ st.markdown("""
     .field-row {
         display: flex;
         padding: 0.5rem 0;
-        border-bottom: 1px solid #f0f4f4;
+        border-bottom: 1px solid var(--tower-gray-100);
     }
     
     .field-label {
         flex: 0 0 35%;
-        color: #5a6c6c;
+        color: var(--tower-gray-600);
         font-size: 0.85rem;
         font-weight: 500;
     }
     
     .field-value {
         flex: 1;
-        color: #1a3535;
+        color: var(--tower-gray-800);
         font-size: 0.9rem;
     }
     
     .field-match {
-        background: rgba(46, 204, 113, 0.15);
+        background: rgba(34, 197, 94, 0.15);
         border-radius: 4px;
         padding: 0 4px;
     }
     
     .field-diff {
-        background: rgba(231, 76, 60, 0.15);
+        background: rgba(239, 68, 68, 0.15);
         border-radius: 4px;
         padding: 0 4px;
     }
     
-    /* Match score badge */
+    /* Match score badges - Tower themed */
     .match-score-high {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 25px;
@@ -169,8 +219,8 @@ st.markdown("""
     }
     
     .match-score-medium {
-        background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
-        color: white;
+        background: linear-gradient(135deg, var(--tower-yellow) 0%, var(--tower-yellow-dark) 100%);
+        color: var(--tower-navy-dark);
         padding: 0.5rem 1rem;
         border-radius: 25px;
         font-weight: 600;
@@ -179,7 +229,7 @@ st.markdown("""
     }
     
     .match-score-low {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 25px;
@@ -200,8 +250,8 @@ st.markdown("""
     }
     
     .priority-medium {
-        background: #fef3c7;
-        color: #d97706;
+        background: #fef9c3;
+        color: #a16207;
         padding: 0.25rem 0.75rem;
         border-radius: 12px;
         font-size: 0.75rem;
@@ -210,8 +260,8 @@ st.markdown("""
     }
     
     .priority-low {
-        background: #dbeafe;
-        color: #2563eb;
+        background: #e0f2fe;
+        color: var(--tower-navy);
         padding: 0.25rem 0.75rem;
         border-radius: 12px;
         font-size: 0.75rem;
@@ -219,27 +269,40 @@ st.markdown("""
         text-transform: uppercase;
     }
     
-    /* Action buttons */
+    /* Action buttons - Tower branded */
     .stButton > button {
         border-radius: 8px;
         font-weight: 600;
         padding: 0.5rem 1.5rem;
         transition: all 0.2s ease;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
+        border: none;
+        color: white;
+    }
+    
+    .stButton > button[kind="primary"]:hover {
+        background: linear-gradient(135deg, var(--tower-navy-light) 0%, var(--tower-navy) 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 83, 155, 0.3);
     }
     
     /* Decision panel */
     .decision-panel {
-        background: linear-gradient(145deg, #f8fafa 0%, #e8eeee 100%);
+        background: linear-gradient(145deg, var(--tower-gray-50) 0%, var(--tower-gray-100) 100%);
         border-radius: 12px;
         padding: 1.5rem;
         margin-top: 1rem;
-        border: 2px solid #d0dede;
+        border: 2px solid var(--tower-gray-200);
     }
     
-    /* Info callout */
+    /* Info callout - Tower branded */
     .info-callout {
-        background: linear-gradient(135deg, #e8f4f4 0%, #d5ebeb 100%);
-        border-left: 4px solid #1a7a7a;
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        border-left: 4px solid var(--tower-navy);
         padding: 1rem 1.25rem;
         border-radius: 0 8px 8px 0;
         margin: 1rem 0;
@@ -247,8 +310,8 @@ st.markdown("""
     
     /* Status badges */
     .status-pending {
-        background: #fef3c7;
-        color: #92400e;
+        background: #fef9c3;
+        color: #a16207;
         padding: 0.25rem 0.75rem;
         border-radius: 12px;
         font-size: 0.8rem;
@@ -256,8 +319,8 @@ st.markdown("""
     }
     
     .status-matched {
-        background: #d1fae5;
-        color: #065f46;
+        background: #dcfce7;
+        color: #166534;
         padding: 0.25rem 0.75rem;
         border-radius: 12px;
         font-size: 0.8rem;
@@ -273,22 +336,50 @@ st.markdown("""
         font-weight: 500;
     }
     
-    /* Sidebar styling */
+    /* Sidebar styling - Tower branded */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0d4f4f 0%, #0a3535 100%);
+        background: linear-gradient(180deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
     }
     
     section[data-testid="stSidebar"] .stMarkdown {
-        color: #ecf0f1;
+        color: #f1f5f9;
+    }
+    
+    section[data-testid="stSidebar"] .stTextInput label {
+        color: var(--tower-yellow) !important;
+    }
+    
+    section[data-testid="stSidebar"] .stButton > button {
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: white;
+    }
+    
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        background: rgba(255, 215, 0, 0.2);
+        border-color: var(--tower-yellow);
+    }
+    
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+        background: var(--tower-yellow);
+        color: var(--tower-navy-dark);
+        border: none;
     }
     
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    .stDeployButton {display: none;}
     
     /* Table styling */
     .dataframe {
         font-size: 0.85rem;
+    }
+    
+    /* DataEditor/DataFrame styling */
+    .stDataFrame {
+        border-radius: 8px;
+        overflow: hidden;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -422,10 +513,19 @@ if 'current_view' not in st.session_state:
     st.session_state.current_view = 'dashboard'
 
 # =============================================================================
-# Sidebar Navigation
+# Sidebar Navigation - Tower Branded
 # =============================================================================
 with st.sidebar:
-    st.markdown("### 🔗 Dedupe Workflow")
+    st.markdown("""
+    <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
+        <div style="background: #FFD700; color: #003d73; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; font-size: 1.2rem; display: inline-block;">
+            🏢 TOWER
+        </div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">
+            Customer De-duping
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("---")
     
     # Agent identification
@@ -466,11 +566,22 @@ with st.sidebar:
 # Main Content Area
 # =============================================================================
 
-# Header
+# Header - Tower Branded
 st.markdown("""
 <div class="main-header">
-    <h1>🔗 Duplicate Record Management</h1>
-    <p>Review and verify potential customer duplicate records</p>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="background: #FFD700; color: #003d73; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 1rem;">TOWER</span>
+                Customer De-duping Workflow
+            </h1>
+            <p>Review and verify potential duplicate customer records</p>
+        </div>
+        <div style="color: #FFD700; font-size: 0.85rem; text-align: right;">
+            <div>Environment</div>
+            <div style="font-weight: 600;">Customer Deduping | NZ</div>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -826,11 +937,18 @@ elif st.session_state.current_view == 'history':
         st.error(f"Error loading history: {str(e)}")
 
 # =============================================================================
-# Footer
+# Footer - Tower Branded
 # =============================================================================
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #666; font-size: 0.8rem;">
-    <p>Dedupe Workflow Tool • Powered by Snowflake Streamlit • Session: {}</p>
+<div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <span style="background: #00539B; color: white; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
+        <span>Customer De-duping Workflow</span>
+        <span>•</span>
+        <span>Powered by Snowflake</span>
+        <span>•</span>
+        <span>Session: {}</span>
+    </div>
 </div>
 """.format(st.session_state.session_id[:8]), unsafe_allow_html=True)
