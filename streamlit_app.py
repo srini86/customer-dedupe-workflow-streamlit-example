@@ -371,9 +371,19 @@ st.markdown("""
     }
     
     section[data-testid="stSidebar"] .stTextInput input {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 215, 0, 0.3);
-        color: white;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-color: rgba(255, 215, 0, 0.5) !important;
+        color: #0d1b4c !important;
+        font-weight: 500;
+    }
+    
+    section[data-testid="stSidebar"] .stTextInput input::placeholder {
+        color: rgba(13, 27, 76, 0.5) !important;
+    }
+    
+    section[data-testid="stSidebar"] .stTextInput input:focus {
+        border-color: var(--tower-yellow) !important;
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3) !important;
     }
     
     section[data-testid="stSidebar"] .stSelectbox label {
