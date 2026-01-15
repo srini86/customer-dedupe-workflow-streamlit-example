@@ -743,13 +743,29 @@ if 'agent_name' not in st.session_state:
     st.session_state.agent_name = 'Agent'
 
 # =============================================================================
-# Header - Tower Insurance NZ Branded with Logo Colors
+# Tower Logo SVG (Based on official logo: navy bg, yellow curve, white tower)
 # =============================================================================
-st.markdown("""
+TOWER_LOGO_SVG = '''
+<svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
+  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
+        stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="30" r="4" fill="white"/>
+</svg>
+'''
+
+# =============================================================================
+# Header - Tower Insurance NZ Branded with Logo
+# =============================================================================
+st.markdown(f"""
 <div class="top-header">
     <div class="header-brand">
-        <span class="header-logo">🏢 TOWER</span>
-        <span class="header-title" style="color: white;">Customer De-duping Workflow (Read-only)</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            {TOWER_LOGO_SVG}
+            <span style="color: #FFD700; font-weight: 700; font-size: 1.1rem;">TOWER</span>
+        </div>
+        <span class="header-title" style="color: white; margin-left: 0.75rem;">Customer De-duping Workflow</span>
     </div>
     <div class="header-env">
         <div style="color: rgba(255,255,255,0.7);">Environment</div>
@@ -1266,14 +1282,25 @@ elif st.session_state.current_view == 'admin':
     
     st.markdown('</div>', unsafe_allow_html=True)
 
+# Footer Logo SVG (tiny version)
+TOWER_LOGO_TINY = '''
+<svg width="20" height="20" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
+  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
+        stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+'''
+
 # =============================================================================
-# Footer - Tower Insurance NZ Branded with Logo Colors
+# Footer - Tower Insurance NZ Branded with Logo
 # =============================================================================
 st.markdown("---")
 st.markdown(f"""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
     <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <span style="background: #0d1b4c; color: #FFD700; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
+        {TOWER_LOGO_TINY}
+        <span style="font-weight: 600; color: #0d1b4c;">TOWER</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Pacific Islands Region</span>

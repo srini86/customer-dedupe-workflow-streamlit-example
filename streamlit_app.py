@@ -561,18 +561,34 @@ if 'current_view' not in st.session_state:
     st.session_state.current_view = 'dashboard'
 
 # =============================================================================
-# Sidebar Navigation - Tower Branded with Logo Colors
+# Tower Logo SVG (Based on official logo: navy bg, yellow curve, white tower)
+# =============================================================================
+TOWER_LOGO_SVG = '''
+<svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
+  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
+        stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="30" r="4" fill="white"/>
+</svg>
+'''
+
+# =============================================================================
+# Sidebar Navigation - Tower Branded with Logo
 # =============================================================================
 with st.sidebar:
-    st.markdown("""
+    st.markdown(f"""
     <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
-        <div style="background: #FFD700; color: #0d1b4c; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; font-size: 1.2rem; display: inline-block; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">
-            🏢 TOWER
+        <div style="display: inline-block; margin-bottom: 0.5rem;">
+            {TOWER_LOGO_SVG}
         </div>
-        <div style="color: #FFD700; font-size: 0.85rem; margin-top: 0.75rem; font-weight: 500;">
+        <div style="color: #FFD700; font-size: 1.1rem; font-weight: 700; margin-top: 0.5rem;">
+            TOWER
+        </div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin-top: 0.25rem;">
             Customer De-duping
         </div>
-        <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem;">
+        <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; margin-top: 0.25rem;">
             Pacific Islands Region
         </div>
     </div>
@@ -637,20 +653,35 @@ with st.sidebar:
 # Main Content Area
 # =============================================================================
 
-# Header - Tower Branded with Logo Colors
-st.markdown("""
+# Header Logo SVG (smaller version for header)
+TOWER_LOGO_SMALL = '''
+<svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
+  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
+        stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="30" r="4" fill="white"/>
+</svg>
+'''
+
+# Header - Tower Branded with Logo
+st.markdown(f"""
 <div class="main-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h1 style="display: flex; align-items: center; gap: 0.75rem; color: white;">
-                <span style="background: #FFD700; color: #0d1b4c; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 1rem; font-weight: 700; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">🏢 TOWER</span>
-                Customer De-duping Workflow
-            </h1>
-            <p style="color: rgba(255,255,255,0.9);">Review and verify potential duplicate customer records</p>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="flex-shrink: 0;">
+                {TOWER_LOGO_SMALL}
+            </div>
+            <div>
+                <h1 style="color: white; margin: 0; font-size: 1.5rem; font-weight: 700;">
+                    Customer De-duping Workflow
+                </h1>
+                <p style="color: rgba(255,255,255,0.85); margin: 0.25rem 0 0 0; font-size: 0.9rem;">Review and verify potential duplicate customer records</p>
+            </div>
         </div>
-        <div style="color: #FFD700; font-size: 0.85rem; text-align: right;">
-            <div style="color: rgba(255,255,255,0.7);">Environment</div>
-            <div style="font-weight: 600; color: #FFD700;">Customer Deduping | NZ</div>
+        <div style="text-align: right;">
+            <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem;">Environment</div>
+            <div style="font-weight: 600; color: #FFD700; font-size: 0.9rem;">Customer Deduping | NZ</div>
         </div>
     </div>
 </div>
@@ -1007,19 +1038,30 @@ elif st.session_state.current_view == 'history':
     except Exception as e:
         st.error(f"Error loading history: {str(e)}")
 
+# Footer Logo SVG (tiny version)
+TOWER_LOGO_TINY = '''
+<svg width="20" height="20" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
+  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
+        stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+'''
+
 # =============================================================================
-# Footer - Tower Branded with Logo Colors
+# Footer - Tower Branded with Logo
 # =============================================================================
 st.markdown("---")
-st.markdown("""
+st.markdown(f"""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
     <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <span style="background: #0d1b4c; color: #FFD700; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
+        {TOWER_LOGO_TINY}
+        <span style="font-weight: 600; color: #0d1b4c;">TOWER</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Powered by Snowflake</span>
         <span>•</span>
-        <span>Session: {}</span>
+        <span>Session: {st.session_state.session_id[:8]}</span>
     </div>
 </div>
-""".format(st.session_state.session_id[:8]), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
