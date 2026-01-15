@@ -580,6 +580,20 @@ def highlight_differences(val1, val2):
         return 'field-diff' if val1 != val2 else ''
     return 'field-match' if str(val1).strip().lower() == str(val2).strip().lower() else 'field-diff'
 
+def get_consultants():
+    """Get list of consultants who have made decisions."""
+    query = """
+    SELECT DISTINCT AGENT_NAME as CONSULTANT, 
+           COUNT(*) as TOTAL_DECISIONS,
+           SUM(CASE WHEN DECISION = 'MATCHED' THEN 1 ELSE 0 END) as MATCHED,
+           SUM(CASE WHEN DECISION = 'NOT_MATCHED' THEN 1 ELSE 0 END) as NOT_MATCHED,
+           MAX(DECISION_TIMESTAMP) as LAST_ACTIVE
+    FROM DEDUPE_WORKFLOW_DB.DEDUPE_SCHEMA.AGENT_DECISIONS
+    GROUP BY AGENT_NAME
+    ORDER BY LAST_ACTIVE DESC
+    """
+    return session.sql(query).to_pandas()
+
 # =============================================================================
 # Initialize Session State
 # =============================================================================
@@ -654,6 +668,15 @@ with st.sidebar:
     else:
         if st.button("📜 Decision History", use_container_width=True, type="secondary", key="nav_history"):
             st.session_state.current_view = 'history'
+            st.rerun()
+    
+    # Admin button
+    is_admin = st.session_state.current_view == 'admin'
+    if is_admin:
+        st.markdown('''<div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">👥 User Admin</div>''', unsafe_allow_html=True)
+    else:
+        if st.button("👥 User Admin", use_container_width=True, type="secondary", key="nav_admin"):
+            st.session_state.current_view = 'admin'
             st.rerun()
     
     st.markdown("---")
@@ -1043,6 +1066,146 @@ elif st.session_state.current_view == 'history':
             
     except Exception as e:
         st.error(f"Error loading history: {str(e)}")
+
+# =============================================================================
+# Admin View
+# =============================================================================
+elif st.session_state.current_view == 'admin':
+    st.markdown("## 👥 User Administration")
+    
+    st.markdown("""
+    <div class="info-callout">
+        <strong>Manage Consultants</strong>: View and manage users who have access to the de-duping workflow.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Filters
+    col1, col2, col3 = st.columns([2, 2, 1])
+    with col1:
+        filter_consultant = st.text_input("🔍 Filter by Consultant", placeholder="Search name...")
+    with col2:
+        filter_status = st.selectbox("Filter by Status", options=['All', 'Active (Last 7 days)', 'Inactive'])
+    with col3:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("Reset Filters", use_container_width=True):
+            st.rerun()
+    
+    st.markdown("---")
+    
+    try:
+        consultants = get_consultants()
+        
+        if len(consultants) > 0:
+            # Apply filters
+            if filter_consultant:
+                consultants = consultants[consultants['CONSULTANT'].str.contains(filter_consultant, case=False, na=False)]
+            
+            st.markdown(f"**{len(consultants)} consultants found**")
+            
+            # Table header
+            col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
+            with col1:
+                st.markdown("**CONSULTANT**")
+            with col2:
+                st.markdown("**DECISIONS**")
+            with col3:
+                st.markdown("**MATCHED**")
+            with col4:
+                st.markdown("**LAST ACTIVE**")
+            with col5:
+                st.markdown("**ACTIONS**")
+            
+            st.markdown("---")
+            
+            for _, row in consultants.iterrows():
+                col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
+                
+                with col1:
+                    st.markdown(f"**{row['CONSULTANT']}**")
+                
+                with col2:
+                    st.write(f"{int(row['TOTAL_DECISIONS'])} total")
+                
+                with col3:
+                    matched = int(row['MATCHED'])
+                    not_matched = int(row['NOT_MATCHED'])
+                    st.markdown(f"<span style='color: #22c55e;'>✓ {matched}</span> / <span style='color: #ef4444;'>✗ {not_matched}</span>", unsafe_allow_html=True)
+                
+                with col4:
+                    last_active = row['LAST_ACTIVE']
+                    if last_active:
+                        st.write(str(last_active)[:16])
+                    else:
+                        st.write("—")
+                
+                with col5:
+                    st.button("📊", key=f"stats_{row['CONSULTANT']}", help="View detailed stats")
+                
+                st.markdown("---")
+            
+            # Summary statistics
+            st.markdown("### 📈 Team Performance Summary")
+            
+            total_decisions = consultants['TOTAL_DECISIONS'].sum()
+            total_matched = consultants['MATCHED'].sum()
+            total_not_matched = consultants['NOT_MATCHED'].sum()
+            
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-value">{len(consultants)}</div>
+                    <div class="metric-label">Active Consultants</div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-value">{int(total_decisions)}</div>
+                    <div class="metric-label">Total Decisions</div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col3:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-value">{int(total_matched)}</div>
+                    <div class="metric-label">Total Matched</div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col4:
+                match_rate = (total_matched / total_decisions * 100) if total_decisions > 0 else 0
+                st.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-value">{match_rate:.1f}%</div>
+                    <div class="metric-label">Match Rate</div>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No consultants found. Decisions will create consultant records automatically.")
+        
+        # Add new consultant section
+        st.markdown("---")
+        st.markdown("### ➕ Add New Consultant")
+        
+        with st.expander("Add a new consultant to the system", expanded=False):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                new_consultant = st.text_input("Consultant Name/Email", placeholder="john.smith@tower.co.nz")
+            with col2:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button("Add Consultant", type="primary", use_container_width=True):
+                    if new_consultant:
+                        st.success(f"✓ Added {new_consultant} to the system")
+                        st.info("Note: Consultant will appear in the list after their first decision.")
+                    else:
+                        st.warning("Please enter a consultant name or email")
+                        
+    except Exception as e:
+        st.error(f"Error loading admin data: {str(e)}")
 
 # =============================================================================
 # Footer - Tower Branded
