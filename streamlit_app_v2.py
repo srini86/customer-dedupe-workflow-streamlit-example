@@ -25,19 +25,20 @@ st.set_page_config(
 )
 
 # =============================================================================
-# Custom CSS - Tower Insurance NZ Corporate Branding
+# Custom CSS - Tower Insurance NZ Corporate Branding (From Official Logo)
 # =============================================================================
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     
-    /* Tower Insurance NZ Corporate Colors */
+    /* Tower Insurance NZ Corporate Colors - From Official Logo */
     :root {
-        --tower-navy: #00539B;
-        --tower-navy-dark: #003d73;
-        --tower-navy-light: #0066bf;
+        --tower-navy: #0d1b4c;
+        --tower-navy-dark: #080f2d;
+        --tower-navy-light: #1a2d6b;
         --tower-yellow: #FFD700;
         --tower-yellow-dark: #E6C200;
+        --tower-yellow-light: #FFE44D;
         --white: #ffffff;
         --gray-50: #f8fafc;
         --gray-100: #f1f5f9;
@@ -59,7 +60,7 @@ st.markdown("""
         background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
     }
     
-    /* Top header bar - Tower branded */
+    /* Top header bar - Tower branded with deep navy */
     .top-header {
         background: linear-gradient(90deg, var(--tower-navy-dark) 0%, var(--tower-navy) 100%);
         padding: 0.75rem 2rem;
@@ -67,34 +68,52 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 4px 20px rgba(0, 83, 155, 0.3);
+        box-shadow: 0 4px 20px rgba(13, 27, 76, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .top-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: 10%;
+        width: 150px;
+        height: 200%;
+        background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+        transform: rotate(-15deg);
     }
     
     .header-brand {
         display: flex;
         align-items: center;
         gap: 1rem;
+        position: relative;
+        z-index: 1;
     }
     
     .header-logo {
         background: var(--tower-yellow);
-        color: var(--tower-navy-dark);
+        color: var(--tower-navy);
         padding: 0.25rem 0.75rem;
         border-radius: 6px;
         font-size: 1.1rem;
         font-weight: 700;
+        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
     }
     
     .header-title {
         color: var(--white);
         font-size: 0.9rem;
-        opacity: 0.9;
+        font-weight: 500;
     }
     
     .header-env {
         color: var(--tower-yellow);
         font-size: 0.8rem;
         text-align: right;
+        position: relative;
+        z-index: 1;
     }
     
     /* Main content card */
@@ -424,7 +443,7 @@ st.markdown("""
         border-radius: 4px;
     }
     
-    /* Match score indicator - Tower themed */
+    /* Match score indicator - Tower themed with proper contrast */
     .match-score-pill {
         display: inline-flex;
         align-items: center;
@@ -437,16 +456,19 @@ st.markdown("""
     .score-high {
         background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .score-medium {
         background: linear-gradient(135deg, var(--tower-yellow) 0%, var(--tower-yellow-dark) 100%);
-        color: var(--tower-navy-dark);
+        color: var(--tower-navy);
+        font-weight: 700;
     }
     
     .score-low {
         background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
         color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     /* Hide Streamlit elements */
@@ -454,7 +476,7 @@ st.markdown("""
     footer {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* Streamlit button overrides - Tower branded */
+    /* Streamlit button overrides - Tower branded with proper contrast */
     .stButton > button {
         border-radius: 8px;
         font-weight: 600;
@@ -465,12 +487,14 @@ st.markdown("""
     .stButton > button[kind="primary"] {
         background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
         border: none;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .stButton > button[kind="primary"]:hover {
         background: linear-gradient(135deg, var(--tower-navy-light) 0%, var(--tower-navy) 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 83, 155, 0.3);
+        box-shadow: 0 4px 12px rgba(13, 27, 76, 0.3);
     }
     
     /* Dataframe styling */
@@ -719,17 +743,17 @@ if 'agent_name' not in st.session_state:
     st.session_state.agent_name = 'Agent'
 
 # =============================================================================
-# Header - Tower Insurance NZ Branded
+# Header - Tower Insurance NZ Branded with Logo Colors
 # =============================================================================
 st.markdown("""
 <div class="top-header">
     <div class="header-brand">
         <span class="header-logo">🏢 TOWER</span>
-        <span class="header-title">Customer De-duping Workflow (Read-only)</span>
+        <span class="header-title" style="color: white;">Customer De-duping Workflow (Read-only)</span>
     </div>
     <div class="header-env">
-        <div>Environment</div>
-        <div style="font-weight: 600;">Customer Deduping | NZ</div>
+        <div style="color: rgba(255,255,255,0.7);">Environment</div>
+        <div style="font-weight: 600; color: #FFD700;">Customer Deduping | NZ</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -857,11 +881,11 @@ if st.session_state.current_view == 'dashboard':
                     count = int(matching['COUNT'].sum())
             
             with cols[i]:
-                color = "#00539B" if count > 0 else "#94a3b8"
+                color = "#0d1b4c" if count > 0 else "#94a3b8"
                 st.markdown(f"""
                 <div style="text-align: center;">
                     <div style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: {color}; font-size: 0.85rem;">{code}</div>
-                    <div style="font-size: 1.1rem; font-weight: 700; color: #003d73;">{count}</div>
+                    <div style="font-size: 1.1rem; font-weight: 700; color: #080f2d;">{count}</div>
                 </div>
                 """, unsafe_allow_html=True)
         
@@ -1049,7 +1073,7 @@ elif st.session_state.current_view == 'compare':
         score_class = 'score-high' if score >= 85 else ('score-medium' if score >= 70 else 'score-low')
         
         st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #00539B; margin-bottom: 1.5rem;">
+        <div style="background: linear-gradient(135deg, rgba(13, 27, 76, 0.05) 0%, rgba(13, 27, 76, 0.1) 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #0d1b4c; margin-bottom: 1.5rem;">
             <strong>Match Analysis:</strong> {cluster['MATCH_REASON']}
             <br><br>
             <span class="match-score-pill {score_class}">Match Score: {score:.0f}%</span>
@@ -1243,13 +1267,13 @@ elif st.session_state.current_view == 'admin':
     st.markdown('</div>', unsafe_allow_html=True)
 
 # =============================================================================
-# Footer - Tower Insurance NZ Branded
+# Footer - Tower Insurance NZ Branded with Logo Colors
 # =============================================================================
 st.markdown("---")
 st.markdown(f"""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
     <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <span style="background: #00539B; color: white; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
+        <span style="background: #0d1b4c; color: #FFD700; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Pacific Islands Region</span>

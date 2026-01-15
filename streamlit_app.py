@@ -32,13 +32,14 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
-    /* Tower Insurance NZ Corporate Colors */
+    /* Tower Insurance NZ Corporate Colors - From Official Logo */
     :root {
-        --tower-navy: #00539B;
-        --tower-navy-dark: #003d73;
-        --tower-navy-light: #0066bf;
+        --tower-navy: #0d1b4c;
+        --tower-navy-dark: #080f2d;
+        --tower-navy-light: #1a2d6b;
         --tower-yellow: #FFD700;
         --tower-yellow-dark: #E6C200;
+        --tower-yellow-light: #FFE44D;
         --tower-white: #ffffff;
         --tower-gray-50: #f8fafc;
         --tower-gray-100: #f1f5f9;
@@ -60,13 +61,13 @@ st.markdown("""
         background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
     }
     
-    /* Tower Header styling */
+    /* Tower Header styling - Deep Navy with Yellow Accent */
     .main-header {
         background: linear-gradient(135deg, var(--tower-navy-dark) 0%, var(--tower-navy) 50%, var(--tower-navy-light) 100%);
         padding: 1.5rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.5rem;
-        box-shadow: 0 4px 20px rgba(0, 83, 155, 0.3);
+        box-shadow: 0 4px 20px rgba(13, 27, 76, 0.4);
         position: relative;
         overflow: hidden;
     }
@@ -74,11 +75,12 @@ st.markdown("""
     .main-header::before {
         content: '';
         position: absolute;
-        top: 0;
-        right: 0;
-        width: 150px;
-        height: 100%;
-        background: linear-gradient(135deg, transparent 0%, rgba(255, 215, 0, 0.1) 100%);
+        top: -50%;
+        right: -5%;
+        width: 200px;
+        height: 200%;
+        background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+        transform: rotate(-15deg);
     }
     
     .main-header h1 {
@@ -90,6 +92,7 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     
     .main-header h1::before {
@@ -98,7 +101,7 @@ st.markdown("""
     }
     
     .main-header p {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.95);
         margin: 0.5rem 0 0 0;
         font-size: 0.95rem;
     }
@@ -108,11 +111,12 @@ st.markdown("""
         align-items: center;
         gap: 0.5rem;
         background: var(--tower-yellow);
-        color: var(--tower-navy-dark);
+        color: var(--tower-navy);
         padding: 0.25rem 0.75rem;
         border-radius: 6px;
         font-weight: 700;
         font-size: 0.9rem;
+        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
     }
     
     /* Metric cards - Tower branded */
@@ -121,14 +125,15 @@ st.markdown("""
         border-radius: 12px;
         padding: 1.25rem;
         text-align: center;
-        box-shadow: 0 2px 12px rgba(0, 83, 155, 0.1);
+        box-shadow: 0 2px 12px rgba(13, 27, 76, 0.1);
         border-left: 4px solid var(--tower-navy);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
     .metric-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(0, 83, 155, 0.15);
+        box-shadow: 0 4px 20px rgba(13, 27, 76, 0.15);
+        border-left-color: var(--tower-yellow);
     }
     
     .metric-value {
@@ -152,7 +157,7 @@ st.markdown("""
         background: var(--tower-white);
         border-radius: 12px;
         padding: 1.5rem;
-        box-shadow: 0 2px 15px rgba(0, 83, 155, 0.1);
+        box-shadow: 0 2px 15px rgba(13, 27, 76, 0.1);
         border-top: 4px solid var(--tower-navy);
         height: 100%;
     }
@@ -174,6 +179,7 @@ st.markdown("""
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .field-row {
@@ -207,7 +213,7 @@ st.markdown("""
         padding: 0 4px;
     }
     
-    /* Match score badges - Tower themed */
+    /* Match score badges - Tower themed with proper contrast */
     .match-score-high {
         background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         color: white;
@@ -216,14 +222,15 @@ st.markdown("""
         font-weight: 600;
         font-size: 1rem;
         display: inline-block;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .match-score-medium {
         background: linear-gradient(135deg, var(--tower-yellow) 0%, var(--tower-yellow-dark) 100%);
-        color: var(--tower-navy-dark);
+        color: var(--tower-navy);
         padding: 0.5rem 1rem;
         border-radius: 25px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 1rem;
         display: inline-block;
     }
@@ -236,6 +243,7 @@ st.markdown("""
         font-weight: 600;
         font-size: 1rem;
         display: inline-block;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     /* Priority badges */
@@ -269,7 +277,7 @@ st.markdown("""
         text-transform: uppercase;
     }
     
-    /* Action buttons - Tower branded */
+    /* Action buttons - Tower branded with proper contrast */
     .stButton > button {
         border-radius: 8px;
         font-weight: 600;
@@ -282,12 +290,13 @@ st.markdown("""
         background: linear-gradient(135deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
         border: none;
         color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .stButton > button[kind="primary"]:hover {
         background: linear-gradient(135deg, var(--tower-navy-light) 0%, var(--tower-navy) 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 83, 155, 0.3);
+        box-shadow: 0 4px 12px rgba(13, 27, 76, 0.3);
     }
     
     /* Decision panel */
@@ -301,7 +310,7 @@ st.markdown("""
     
     /* Info callout - Tower branded */
     .info-callout {
-        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        background: linear-gradient(135deg, rgba(13, 27, 76, 0.05) 0%, rgba(13, 27, 76, 0.1) 100%);
         border-left: 4px solid var(--tower-navy);
         padding: 1rem 1.25rem;
         border-radius: 0 8px 8px 0;
@@ -336,34 +345,73 @@ st.markdown("""
         font-weight: 500;
     }
     
-    /* Sidebar styling - Tower branded */
+    /* Sidebar styling - Tower branded with light text on dark navy */
     section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, var(--tower-navy) 0%, var(--tower-navy-dark) 100%);
     }
     
     section[data-testid="stSidebar"] .stMarkdown {
-        color: #f1f5f9;
+        color: #ffffff;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown p,
+    section[data-testid="stSidebar"] .stMarkdown span,
+    section[data-testid="stSidebar"] .stMarkdown li {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown h1,
+    section[data-testid="stSidebar"] .stMarkdown h2,
+    section[data-testid="stSidebar"] .stMarkdown h3 {
+        color: var(--tower-yellow) !important;
     }
     
     section[data-testid="stSidebar"] .stTextInput label {
         color: var(--tower-yellow) !important;
     }
     
+    section[data-testid="stSidebar"] .stTextInput input {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 215, 0, 0.3);
+        color: white;
+    }
+    
+    section[data-testid="stSidebar"] .stSelectbox label {
+        color: var(--tower-yellow) !important;
+    }
+    
     section[data-testid="stSidebar"] .stButton > button {
-        background: rgba(255, 215, 0, 0.1);
-        border: 1px solid rgba(255, 215, 0, 0.3);
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid rgba(255, 215, 0, 0.4);
         color: white;
     }
     
     section[data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(255, 215, 0, 0.2);
+        background: rgba(255, 215, 0, 0.25);
         border-color: var(--tower-yellow);
     }
     
     section[data-testid="stSidebar"] .stButton > button[kind="primary"] {
         background: var(--tower-yellow);
-        color: var(--tower-navy-dark);
+        color: var(--tower-navy);
         border: none;
+        font-weight: 700;
+    }
+    
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+        background: var(--tower-yellow-light);
+    }
+    
+    section[data-testid="stSidebar"] hr {
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+    
+    section[data-testid="stSidebar"] .stMetric label {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    
+    section[data-testid="stSidebar"] .stMetric [data-testid="stMetricValue"] {
+        color: var(--tower-yellow) !important;
     }
     
     /* Hide Streamlit branding */
@@ -513,16 +561,19 @@ if 'current_view' not in st.session_state:
     st.session_state.current_view = 'dashboard'
 
 # =============================================================================
-# Sidebar Navigation - Tower Branded
+# Sidebar Navigation - Tower Branded with Logo Colors
 # =============================================================================
 with st.sidebar:
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
-        <div style="background: #FFD700; color: #003d73; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; font-size: 1.2rem; display: inline-block;">
+        <div style="background: #FFD700; color: #0d1b4c; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; font-size: 1.2rem; display: inline-block; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">
             🏢 TOWER
         </div>
-        <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">
+        <div style="color: #FFD700; font-size: 0.85rem; margin-top: 0.75rem; font-weight: 500;">
             Customer De-duping
+        </div>
+        <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem;">
+            Pacific Islands Region
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -566,20 +617,20 @@ with st.sidebar:
 # Main Content Area
 # =============================================================================
 
-# Header - Tower Branded
+# Header - Tower Branded with Logo Colors
 st.markdown("""
 <div class="main-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-            <h1 style="display: flex; align-items: center; gap: 0.75rem;">
-                <span style="background: #FFD700; color: #003d73; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 1rem;">TOWER</span>
+            <h1 style="display: flex; align-items: center; gap: 0.75rem; color: white;">
+                <span style="background: #FFD700; color: #0d1b4c; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 1rem; font-weight: 700; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">🏢 TOWER</span>
                 Customer De-duping Workflow
             </h1>
-            <p>Review and verify potential duplicate customer records</p>
+            <p style="color: rgba(255,255,255,0.9);">Review and verify potential duplicate customer records</p>
         </div>
         <div style="color: #FFD700; font-size: 0.85rem; text-align: right;">
-            <div>Environment</div>
-            <div style="font-weight: 600;">Customer Deduping | NZ</div>
+            <div style="color: rgba(255,255,255,0.7);">Environment</div>
+            <div style="font-weight: 600; color: #FFD700;">Customer Deduping | NZ</div>
         </div>
     </div>
 </div>
@@ -937,13 +988,13 @@ elif st.session_state.current_view == 'history':
         st.error(f"Error loading history: {str(e)}")
 
 # =============================================================================
-# Footer - Tower Branded
+# Footer - Tower Branded with Logo Colors
 # =============================================================================
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
     <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <span style="background: #00539B; color: white; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
+        <span style="background: #0d1b4c; color: #FFD700; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;">TOWER</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Powered by Snowflake</span>
