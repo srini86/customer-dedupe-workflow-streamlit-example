@@ -743,15 +743,20 @@ if 'agent_name' not in st.session_state:
     st.session_state.agent_name = 'Agent'
 
 # =============================================================================
-# Tower Logo SVG (Based on official logo: navy bg, yellow curve, white tower)
+# Tower Logo SVG (Based on official logo: yellow swoosh with navy lighthouse)
 # =============================================================================
 TOWER_LOGO_SVG = '''
-<svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
-  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
-  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
-        stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="50" cy="30" r="4" fill="white"/>
+<svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Yellow swoosh/disc -->
+  <ellipse cx="50" cy="35" rx="42" ry="18" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <!-- Navy lighthouse/tower body -->
+  <path d="M42 45 L38 95 L62 95 L58 45 Z" fill="#0d1b4c"/>
+  <!-- Lighthouse top/cabin -->
+  <rect x="40" y="38" width="20" height="12" rx="2" fill="#0d1b4c"/>
+  <!-- Lighthouse light dome -->
+  <ellipse cx="50" cy="38" rx="8" ry="4" fill="#0d1b4c"/>
+  <!-- Small window -->
+  <rect x="46" y="55" width="8" height="6" rx="1" fill="#FFD700" opacity="0.8"/>
 </svg>
 '''
 
@@ -761,11 +766,16 @@ TOWER_LOGO_SVG = '''
 st.markdown(f"""
 <div class="top-header">
     <div class="header-brand">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-            {TOWER_LOGO_SVG}
-            <span style="color: #FFD700; font-weight: 700; font-size: 1.1rem;">TOWER</span>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="background: white; padding: 0.35rem; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                {TOWER_LOGO_SVG}
+            </div>
+            <div>
+                <div style="color: #FFD700; font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;">TOWER</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.75rem;">Insurance NZ</div>
+            </div>
         </div>
-        <span class="header-title" style="color: white; margin-left: 0.75rem;">Customer De-duping Workflow</span>
+        <span class="header-title" style="color: white; margin-left: 1rem;">Customer De-duping Workflow</span>
     </div>
     <div class="header-env">
         <div style="color: rgba(255,255,255,0.7);">Environment</div>
@@ -1284,11 +1294,15 @@ elif st.session_state.current_view == 'admin':
 
 # Footer Logo SVG (tiny version)
 TOWER_LOGO_TINY = '''
-<svg width="20" height="20" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" rx="18" fill="#0d1b4c"/>
-  <ellipse cx="50" cy="35" rx="35" ry="25" fill="#FFD700" transform="rotate(-15 50 35)"/>
-  <path d="M50 25 L50 75 M42 75 L58 75 M44 35 L56 35 M46 45 L54 45 M45 55 L55 55 M48 25 L52 25 L52 20 L50 15 L48 20 Z" 
-        stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Yellow swoosh/disc -->
+  <ellipse cx="50" cy="35" rx="42" ry="18" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <!-- Navy lighthouse/tower body -->
+  <path d="M42 45 L38 95 L62 95 L58 45 Z" fill="#0d1b4c"/>
+  <!-- Lighthouse top/cabin -->
+  <rect x="40" y="38" width="20" height="12" rx="2" fill="#0d1b4c"/>
+  <!-- Lighthouse light dome -->
+  <ellipse cx="50" cy="38" rx="8" ry="4" fill="#0d1b4c"/>
 </svg>
 '''
 
@@ -1298,9 +1312,10 @@ TOWER_LOGO_TINY = '''
 st.markdown("---")
 st.markdown(f"""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.75rem;">
         {TOWER_LOGO_TINY}
-        <span style="font-weight: 600; color: #0d1b4c;">TOWER</span>
+        <span style="font-weight: 600; color: #0d1b4c;">Tower Insurance</span>
+        <span>•</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Pacific Islands Region</span>

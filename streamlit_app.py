@@ -16,6 +16,26 @@ from datetime import datetime
 import uuid
 
 # =============================================================================
+# Tower Insurance Logo (SVG)
+# =============================================================================
+TOWER_LOGO_SVG = '''
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Yellow swoosh/disc -->
+  <ellipse cx="50" cy="35" rx="42" ry="18" fill="#FFD700" transform="rotate(-15 50 35)"/>
+  <!-- Navy lighthouse/tower body -->
+  <path d="M42 45 L38 95 L62 95 L58 45 Z" fill="#0d1b4c"/>
+  <!-- Lighthouse top/cabin -->
+  <rect x="40" y="38" width="20" height="12" rx="2" fill="#0d1b4c"/>
+  <!-- Lighthouse light dome -->
+  <ellipse cx="50" cy="38" rx="8" ry="4" fill="#0d1b4c"/>
+  <!-- Small window -->
+  <rect x="46" y="55" width="8" height="6" rx="1" fill="#FFD700" opacity="0.8"/>
+</svg>
+'''
+
+TOWER_LOGO_BASE64 = "data:image/svg+xml;base64," + __import__('base64').b64encode(TOWER_LOGO_SVG.encode()).decode()
+
+# =============================================================================
 # Page Configuration
 # =============================================================================
 st.set_page_config(
@@ -574,15 +594,18 @@ if 'current_view' not in st.session_state:
 # Sidebar Navigation - Tower Branded
 # =============================================================================
 with st.sidebar:
-    st.markdown("""
+    st.markdown(f"""
     <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
-        <div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1.2rem; border-radius: 10px; font-weight: 700; font-size: 1.3rem; display: inline-block; box-shadow: 0 2px 10px rgba(255,215,0,0.4);">
-            🏢 TOWER
+        <div style="background: white; padding: 0.75rem; border-radius: 12px; display: inline-block; box-shadow: 0 2px 15px rgba(0,0,0,0.2);">
+            <img src="{TOWER_LOGO_BASE64}" width="70" height="70" style="display: block;">
         </div>
-        <div style="color: #FFD700; font-size: 0.85rem; font-weight: 500; margin-top: 0.75rem;">
+        <div style="color: #FFD700; font-size: 0.95rem; font-weight: 600; margin-top: 0.75rem; letter-spacing: 2px;">
+            TOWER
+        </div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin-top: 0.25rem;">
             Customer De-duping
         </div>
-        <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem;">
+        <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; margin-top: 0.25rem;">
             Pacific Islands Region
         </div>
     </div>
@@ -648,12 +671,12 @@ with st.sidebar:
 # =============================================================================
 
 # Header - Tower Branded
-st.markdown("""
+st.markdown(f"""
 <div class="main-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="background: #FFD700; color: #0d1b4c; padding: 0.4rem 0.8rem; border-radius: 8px; font-weight: 700; font-size: 1rem;">
-                🏢 TOWER
+            <div style="background: white; padding: 0.4rem; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <img src="{TOWER_LOGO_BASE64}" width="45" height="45">
             </div>
             <div>
                 <h1 style="color: white; margin: 0; font-size: 1.5rem; font-weight: 700;">
@@ -1025,16 +1048,18 @@ elif st.session_state.current_view == 'history':
 # Footer - Tower Branded
 # =============================================================================
 st.markdown("---")
-footer_html = """
+footer_html = f"""
 <div style="text-align: center; color: #64748b; font-size: 0.8rem; padding: 1rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <span style="background: #0d1b4c; color: #FFD700; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">TOWER</span>
+    <div style="display: inline-flex; align-items: center; gap: 0.75rem;">
+        <img src="{TOWER_LOGO_BASE64}" width="24" height="24">
+        <span style="font-weight: 600; color: #0d1b4c;">Tower Insurance</span>
+        <span>•</span>
         <span>Customer De-duping Workflow</span>
         <span>•</span>
         <span>Powered by Snowflake</span>
         <span>•</span>
-        <span>Session: {session_id}</span>
+        <span>Session: {st.session_state.session_id[:8]}</span>
     </div>
 </div>
-""".format(session_id=st.session_state.session_id[:8])
+"""
 st.markdown(footer_html, unsafe_allow_html=True)
