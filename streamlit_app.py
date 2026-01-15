@@ -584,24 +584,44 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Navigation
-    st.markdown("### Navigation")
+    # Navigation with highlighted selection
+    st.markdown('<p style="color: #FFD700; font-weight: 600; margin-bottom: 0.5rem;">Navigation</p>', unsafe_allow_html=True)
     
-    if st.button("📊 Dashboard", use_container_width=True, type="secondary"):
-        st.session_state.current_view = 'dashboard'
-        st.rerun()
+    # Dashboard button
+    is_dashboard = st.session_state.current_view == 'dashboard'
+    if is_dashboard:
+        st.markdown('''<div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">📊 Dashboard</div>''', unsafe_allow_html=True)
+    else:
+        if st.button("📊 Dashboard", use_container_width=True, type="secondary", key="nav_dashboard"):
+            st.session_state.current_view = 'dashboard'
+            st.rerun()
     
-    if st.button("📋 Work Queue", use_container_width=True, type="secondary"):
-        st.session_state.current_view = 'work_queue'
-        st.rerun()
+    # Work Queue button
+    is_work_queue = st.session_state.current_view == 'work_queue'
+    if is_work_queue:
+        st.markdown('''<div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">📋 Work Queue</div>''', unsafe_allow_html=True)
+    else:
+        if st.button("📋 Work Queue", use_container_width=True, type="secondary", key="nav_work_queue"):
+            st.session_state.current_view = 'work_queue'
+            st.rerun()
     
-    if st.button("🔍 Review Records", use_container_width=True, type="primary"):
-        st.session_state.current_view = 'review'
-        st.rerun()
+    # Review Records button
+    is_review = st.session_state.current_view == 'review'
+    if is_review:
+        st.markdown('''<div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">🔍 Review Records</div>''', unsafe_allow_html=True)
+    else:
+        if st.button("🔍 Review Records", use_container_width=True, type="secondary", key="nav_review"):
+            st.session_state.current_view = 'review'
+            st.rerun()
     
-    if st.button("📜 Decision History", use_container_width=True, type="secondary"):
-        st.session_state.current_view = 'history'
-        st.rerun()
+    # Decision History button
+    is_history = st.session_state.current_view == 'history'
+    if is_history:
+        st.markdown('''<div style="background: #FFD700; color: #0d1b4c; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">📜 Decision History</div>''', unsafe_allow_html=True)
+    else:
+        if st.button("📜 Decision History", use_container_width=True, type="secondary", key="nav_history"):
+            st.session_state.current_view = 'history'
+            st.rerun()
     
     st.markdown("---")
     st.markdown("### Quick Stats")
